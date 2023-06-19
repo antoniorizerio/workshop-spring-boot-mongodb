@@ -24,4 +24,11 @@ public class UserDTO implements Serializable {
 		}
 		return new UserDTO();
 	}
+	
+	public static UserEntity getUserEntityFromDTO(UserDTO userDTO) {
+		if(!Objects.isNull(userDTO)) {
+			return new UserEntity(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
+		}
+		return new UserEntity();
+	}
 }

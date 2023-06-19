@@ -2,14 +2,17 @@ package com.antoniorizerio.workshopmongo.services;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.antoniorizerio.workshopmongo.dto.UserDTO;
 import com.antoniorizerio.workshopmongo.entities.UserEntity;
 import com.antoniorizerio.workshopmongo.repositories.UserRepository;
+import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
 import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
+import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
 import com.antoniorizerio.workshopmongo.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -38,6 +41,17 @@ public class UserService {
 		userEntityOpt.ifPresentOrElse(x -> {
 			response.setUserDTO(UserDTO.getUserDTOFromEntity(x));
 		}, () -> { throw new ObjectNotFoundException("Objeto com id: "+ id +" não encontrado."); });
+		return response;
+	}
+	
+	public InsertUserResponse insert(InsertUserRequest request) {
+		InsertUserResponse response = new InsertUserResponse();
+		if(!Objects.isNull(request)) {
+			response.setUserDTO(
+				UserDTO.getUserDTOFromEntity(
+					userRepository.insert(
+						UserDTO.getUserEntityFromDTO(request.getUserDTO()))));
+		}
 		return response;
 	}
 	
