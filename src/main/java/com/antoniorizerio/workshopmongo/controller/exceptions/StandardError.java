@@ -1,4 +1,4 @@
-package com.antoniorizerio.workshopmongo.controllers.exceptions;
+package com.antoniorizerio.workshopmongo.controller.exceptions;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;

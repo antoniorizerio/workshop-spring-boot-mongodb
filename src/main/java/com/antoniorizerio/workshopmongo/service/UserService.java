@@ -1,19 +1,23 @@
-package com.antoniorizerio.workshopmongo.services;
+package com.antoniorizerio.workshopmongo.service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.antoniorizerio.workshopmongo.dto.UserDTO;
-import com.antoniorizerio.workshopmongo.entities.UserEntity;
-import com.antoniorizerio.workshopmongo.repositories.UserRepository;
+
+import com.antoniorizerio.workshopmongo.repository.UserRepository;
+import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
 import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
 import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
 import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
-import com.antoniorizerio.workshopmongo.services.exceptions.ObjectNotFoundException;
+import com.antoniorizerio.workshopmongo.service.exceptions.ObjectNotFoundException;
+import com.antoniorizerio.workshopmongo.util.ConversaoUtil;
+import com.antoniorizerio.workshopmongo.util.CreateObjectsUtil;
 
 @Service
 public class UserService {
@@ -24,33 +28,32 @@ public class UserService {
 	
 	public FindAllUserResponse findAll() {
 		List<UserEntity> listAllUsers = userRepository.findAll();
-		FindAllUserResponse response = new FindAllUserResponse();
 		if(!isEmpty(listAllUsers)) {
-			UserDTO userDTO = null;
-			for(UserEntity entity: listAllUsers) {
-				userDTO = UserDTO.getUserDTOFromEntity(entity);
-				response.getListUserDTO().add(userDTO);
-			}
+		    return CreateObjectsUtil.createFindAllUserResponseWithListDTO(
+					listAllUsers.stream().map(userEntity -> 
+					 ConversaoUtil.getUserDTOFromEntity(userEntity)).collect(Collectors.toList()));
+		}
+		return CreateObjectsUtil.createFindAllUserResponseEmpty();
+	}
+	
+	public FindByIdUserResponse findById(String id) {
+		FindByIdUserResponse response = CreateObjectsUtil.createFindByIdUserResponseEmpty();
+		if(!objectStringIsEmpty(id)) {
+			Optional<UserEntity> OptUserEntity = userRepository.findById(id);
+			OptUserEntity.ifPresentOrElse(x -> {
+				response.setUserDTO(ConversaoUtil.getUserDTOFromEntity(x));	
+			}, () -> { throw new ObjectNotFoundException("Objeto com id: "+ id +" não encontrado."); });
 		}
 		return response;
 	}
 	
-	public FindByIdUserResponse findById(String id) {
-		FindByIdUserResponse response = new FindByIdUserResponse();
-		Optional<UserEntity> userEntityOpt = userRepository.findById(id);
-		userEntityOpt.ifPresentOrElse(x -> {
-			response.setUserDTO(UserDTO.getUserDTOFromEntity(x));
-		}, () -> { throw new ObjectNotFoundException("Objeto com id: "+ id +" não encontrado."); });
-		return response;
-	}
-	
 	public InsertUserResponse insert(InsertUserRequest request) {
-		InsertUserResponse response = new InsertUserResponse();
+		InsertUserResponse response = CreateObjectsUtil.createInsertUserResponseEmpty();
 		if(!Objects.isNull(request)) {
 			response.setUserDTO(
-				UserDTO.getUserDTOFromEntity(
-					userRepository.insert(
-						UserDTO.getUserEntityFromDTO(request.getUserDTO()))));
+					ConversaoUtil.getUserDTOFromEntity(
+					   userRepository.insert(
+							ConversaoUtil.getUserEntityFromDTO(request.getUserDTO()))));
 		}
 		return response;
 	}
@@ -58,4 +61,14 @@ public class UserService {
 	private boolean isEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
     }
+	
+	private boolean objectStringIsEmpty(String id) {
+		if(Objects.isNull(id)) {
+			return true;
+		}
+		if(id.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
 }

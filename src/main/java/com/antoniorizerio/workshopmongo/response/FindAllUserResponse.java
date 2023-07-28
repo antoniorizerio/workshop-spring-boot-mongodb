@@ -19,4 +19,5 @@ public class FindAllUserResponse implements Serializable {
 	
 	private List<UserDTO> listUserDTO = new ArrayList<>();
 
+
 }

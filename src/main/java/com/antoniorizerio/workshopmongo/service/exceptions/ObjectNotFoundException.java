@@ -1,12 +1,12 @@
-package com.antoniorizerio.workshopmongo.services.exceptions;
+package com.antoniorizerio.workshopmongo.service.exceptions;
 
 /**
  * Exceção personalizada quando eu utilizo um ID que não existe para buscar
  * um usuário.
  * 
- * RuntimeException é uma exceção padrão que o compilador n exige que eu a trate.
- * Interessante utilizar RuntimeException pois com isso nossa classe central de 
- * tratamento de exceções vai tratar, não precisa colocar as clausulas no codigo.
+ * RuntimeException é uma exceção padrão que o compilador n exige que eu a trate. Interessante utilizar 
+ * RuntimeException pois com isso nossa classe central de tratamento de exceções vai tratar, não precisa 
+ * colocar as clausulas no codigo. Se colocassemos Exception teriamos que tratar no código.
  * 
  * @author kakab
  *
