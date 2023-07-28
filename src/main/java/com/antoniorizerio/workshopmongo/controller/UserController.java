@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
+import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
 import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
@@ -58,4 +60,14 @@ public class UserController {
 					path("/{id}").buildAndExpand(response.getUserDTO().getId()).toUri();
 		return ResponseEntity.created(uri).body(response);
 	} 
+	
+	
+	// OU: @RequestMapping(method = RequestMethod.DELETE) //
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<DeleteUserResponse> delete(@PathVariable String id) {
+		return ResponseEntity.ok(userService.delete(id));
+		
+		// Para não retornar nada utilizo o comando: 204 //
+		//return ResponseEntity.noContent().build();
+	}
 }

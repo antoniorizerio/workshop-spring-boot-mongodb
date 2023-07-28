@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.antoniorizerio.workshopmongo.repository.UserRepository;
 import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
 import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
+import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
 import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
@@ -38,12 +39,10 @@ public class UserService {
 	
 	public FindByIdUserResponse findById(String id) {
 		FindByIdUserResponse response = CreateObjectsUtil.createFindByIdUserResponseEmpty();
-		if(!objectStringIsEmpty(id)) {
-			Optional<UserEntity> OptUserEntity = userRepository.findById(id);
+		Optional<UserEntity> OptUserEntity = userRepository.findById(id);
 			OptUserEntity.ifPresentOrElse(x -> {
 				response.setUserDTO(ConversaoUtil.getUserDTOFromEntity(x));	
-			}, () -> { throw new ObjectNotFoundException("Objeto com id: "+ id +" não encontrado."); });
-		}
+		}, () -> { throw new ObjectNotFoundException("Objeto com id: "+ id +" não encontrado."); });
 		return response;
 	}
 	
@@ -58,17 +57,17 @@ public class UserService {
 		return response;
 	}
 	
+	public DeleteUserResponse delete(String id) {
+		DeleteUserResponse response = CreateObjectsUtil.createDeleteUserResponseEmpty();
+		Optional<UserEntity> optUserEntity = userRepository.findById(id);
+		optUserEntity.ifPresentOrElse(userEntity -> {
+			response.setUserDTO(ConversaoUtil.getUserDTOFromEntity(userEntity));
+			userRepository.delete(userEntity);
+		},() -> { throw new ObjectNotFoundException("Objeto com id: "+ id +" não encontrado."); });
+		return response;
+	}
+	
 	private boolean isEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
     }
-	
-	private boolean objectStringIsEmpty(String id) {
-		if(Objects.isNull(id)) {
-			return true;
-		}
-		if(id.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
 }

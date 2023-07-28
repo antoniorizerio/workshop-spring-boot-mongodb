@@ -2,6 +2,7 @@ package com.antoniorizerio.workshopmongo.util;
 
 import java.util.List;
 import com.antoniorizerio.workshopmongo.dto.UserDTO;
+import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
 import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
@@ -28,4 +29,7 @@ public class CreateObjectsUtil {
 		return new InsertUserResponse();
 	}
 	
+	public static DeleteUserResponse createDeleteUserResponseEmpty() {
+		return new DeleteUserResponse();
+	}
 }
