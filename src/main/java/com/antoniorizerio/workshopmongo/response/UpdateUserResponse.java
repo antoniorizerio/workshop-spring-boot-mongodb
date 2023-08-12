@@ -1,4 +1,4 @@
-package com.antoniorizerio.workshopmongo.request;
+package com.antoniorizerio.workshopmongo.response;
 
 import java.io.Serializable;
 import com.antoniorizerio.workshopmongo.dto.UserDTO;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InsertUserRequest implements Serializable {
-
-	private static final long serialVersionUID = -8156094466792617896L;
+public class UpdateUserResponse implements Serializable {
+	
+	private static final long serialVersionUID = -7453337769573822789L;
 	
 	private UserDTO userDTO = new UserDTO();
 

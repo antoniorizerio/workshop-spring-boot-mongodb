@@ -6,6 +6,7 @@ import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
 import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
+import com.antoniorizerio.workshopmongo.response.UpdateUserResponse;
 
 public class CreateObjectsUtil {
 
@@ -31,5 +32,9 @@ public class CreateObjectsUtil {
 	
 	public static DeleteUserResponse createDeleteUserResponseEmpty() {
 		return new DeleteUserResponse();
+	}
+	
+	public static UpdateUserResponse createUpdateUserResponseEmpty() {
+		return new UpdateUserResponse();
 	}
 }

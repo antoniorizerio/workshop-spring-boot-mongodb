@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InsertUserRequest implements Serializable {
+public class UpdateUserRequest implements Serializable {
 
-	private static final long serialVersionUID = -8156094466792617896L;
+	private static final long serialVersionUID = -8156094466792614100L;
 	
 	private UserDTO userDTO = new UserDTO();
 

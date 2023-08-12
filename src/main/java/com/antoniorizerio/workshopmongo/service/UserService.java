@@ -9,13 +9,16 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.antoniorizerio.workshopmongo.dto.UserDTO;
 import com.antoniorizerio.workshopmongo.repository.UserRepository;
 import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
 import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
+import com.antoniorizerio.workshopmongo.request.UpdateUserRequest;
 import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
 import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
+import com.antoniorizerio.workshopmongo.response.UpdateUserResponse;
 import com.antoniorizerio.workshopmongo.service.exceptions.ObjectNotFoundException;
 import com.antoniorizerio.workshopmongo.util.ConversaoUtil;
 import com.antoniorizerio.workshopmongo.util.CreateObjectsUtil;
@@ -67,7 +70,32 @@ public class UserService {
 		return response;
 	}
 	
+	public UpdateUserResponse update(UpdateUserRequest updateUserRequest) {
+		UpdateUserResponse response = CreateObjectsUtil.createUpdateUserResponseEmpty();
+		if(!isUpdateUserDTOEmpty(updateUserRequest)) {
+			Optional<UserEntity> optUserEntity = userRepository.findById(updateUserRequest.getUserDTO().getId());
+			optUserEntity.ifPresentOrElse(userEntity -> {
+				configUpdateUserEntity(userEntity, updateUserRequest.getUserDTO());
+				response.setUserDTO(ConversaoUtil.getUserDTOFromEntity(userRepository.save(userEntity)));
+			},() -> { throw new ObjectNotFoundException("Objeto com id: "+ updateUserRequest.getUserDTO().getId() 
+							+" não encontrado."); });
+		}
+		return response;
+	}
+	
+	private void configUpdateUserEntity(UserEntity userEntity, UserDTO userDTO) {
+		userEntity.setEmail(userDTO.getEmail());
+		userEntity.setName(userDTO.getName());
+	}
+	
 	private boolean isEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
     }
+	
+	private boolean isUpdateUserDTOEmpty(UpdateUserRequest updateUserRequest) {
+		if(!Objects.isNull(updateUserRequest) && !Objects.isNull(updateUserRequest.getUserDTO())) {
+			return false;
+		}
+		return true;
+	}
 }
