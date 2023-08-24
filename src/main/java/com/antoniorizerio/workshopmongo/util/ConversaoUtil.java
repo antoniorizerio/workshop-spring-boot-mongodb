@@ -1,6 +1,8 @@
 package com.antoniorizerio.workshopmongo.util;
 
 import java.util.Objects;
+
+import com.antoniorizerio.workshopmongo.dto.AuthorDTO;
 import com.antoniorizerio.workshopmongo.dto.UserDTO;
 import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
 
@@ -18,5 +20,12 @@ public class ConversaoUtil {
 			return new UserEntity(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
 		}
 		return new UserEntity();
+	}
+	
+	public static AuthorDTO getAuthorDTOFromUser(UserEntity userEntity) {
+		if(!Objects.isNull(userEntity)) {
+			return CreateObjectsUtil.createAuthorDTOFromUser(userEntity);
+		}
+		return CreateObjectsUtil.createAuthorDTO();
 	}
 }

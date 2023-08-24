@@ -15,6 +15,7 @@ import com.antoniorizerio.workshopmongo.repository.PostRepository;
 import com.antoniorizerio.workshopmongo.repository.UserRepository;
 import com.antoniorizerio.workshopmongo.repository.entity.PostEntity;
 import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
+import com.antoniorizerio.workshopmongo.util.ConversaoUtil;
 
 // Classe de Configuração. O Spring interpreta como uma Configuração //
 /**
@@ -49,6 +50,7 @@ public class Instantiation implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		System.out.println("teste");
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 		Date data1 = sdf.parse("21/03/2018");
 		Date data2 = sdf.parse("23/03/2018");
@@ -60,10 +62,11 @@ public class Instantiation implements CommandLineRunner {
 		UserEntity alex = new UserEntity(null, "Alex Green", "alex@gmail.com");
 		UserEntity bob = new UserEntity(null, "Bob Grey", "bob@gmail.com");
 		
-		PostEntity post1 = new PostEntity(null, data1, "Partiu viagem", "Vou viajar para São Paulo. Abraços", maria);
-		PostEntity post2 = new PostEntity(null, data2, "Bom dia", "Acordei feliz hoje!", maria);
-		
 		userRepository.saveAll(Arrays.asList(maria, alex, bob));
+		
+		PostEntity post1 = new PostEntity(null, data1, "Partiu viagem", "Vou viajar para São Paulo. Abraços", ConversaoUtil.getAuthorDTOFromUser(maria));
+		PostEntity post2 = new PostEntity(null, data2, "Bom dia", "Acordei feliz hoje!", ConversaoUtil.getAuthorDTOFromUser(maria));
+		
 		postRepository.saveAll(Arrays.asList(post1, post2));
 	}
 }

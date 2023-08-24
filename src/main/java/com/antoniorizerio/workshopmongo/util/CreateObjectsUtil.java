@@ -1,7 +1,10 @@
 package com.antoniorizerio.workshopmongo.util;
 
 import java.util.List;
+
+import com.antoniorizerio.workshopmongo.dto.AuthorDTO;
 import com.antoniorizerio.workshopmongo.dto.UserDTO;
+import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
 import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
@@ -36,5 +39,13 @@ public class CreateObjectsUtil {
 	
 	public static UpdateUserResponse createUpdateUserResponseEmpty() {
 		return new UpdateUserResponse();
+	}
+	
+	public static AuthorDTO createAuthorDTOFromUser(UserEntity userEntity) {
+		return new AuthorDTO(userEntity);
+	}
+	
+	public static AuthorDTO createAuthorDTO() {
+		return new AuthorDTO();
 	}
 }
