@@ -68,5 +68,9 @@ public class Instantiation implements CommandLineRunner {
 		PostEntity post2 = new PostEntity(null, data2, "Bom dia", "Acordei feliz hoje!", ConversaoUtil.getAuthorDTOFromUser(maria));
 		
 		postRepository.saveAll(Arrays.asList(post1, post2));
+		
+		maria.getPosts().add(post1);
+		maria.getPosts().add(post2);
+		userRepository.save(maria);
 	}
 }
