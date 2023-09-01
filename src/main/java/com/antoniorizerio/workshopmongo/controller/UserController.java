@@ -17,8 +17,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
 import com.antoniorizerio.workshopmongo.request.UpdateUserRequest;
 import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
-import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
+import com.antoniorizerio.workshopmongo.response.FindAllUserComPostsResponse;
+import com.antoniorizerio.workshopmongo.response.FindAllUserSemPostsResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
+import com.antoniorizerio.workshopmongo.response.FindPostsUserResponse;
 import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
 import com.antoniorizerio.workshopmongo.response.UpdateUserResponse;
 import com.antoniorizerio.workshopmongo.service.UserService;
@@ -32,9 +34,16 @@ public class UserController {
 	
 	// OU: @RequestMapping(method = RequestMethod.GET) //
 	// EndPoint //
+	@GetMapping(value = "/posts")
+	public ResponseEntity<FindAllUserComPostsResponse> findAllWithPosts() {
+		return ResponseEntity.ok().body(userService.findAllWithPosts());
+	}
+	
+	// OU: @RequestMapping(method = RequestMethod.GET) //
+	// EndPoint //
 	@GetMapping
-	public ResponseEntity<FindAllUserResponse> findAll() {
-		return ResponseEntity.ok().body(userService.findAll());
+	public ResponseEntity<FindAllUserSemPostsResponse> findAllSemPosts() {
+		return ResponseEntity.ok().body(userService.findAllWithoutPosts());
 	}
 	
 	// OU: @RequestMapping(value="/{id}", method=RequestMethod.GET) //
@@ -87,5 +96,13 @@ public class UserController {
 //		UpdateUserResponse response = userService.update(request);
 //		return ResponseEntity.noContent().build();
 //	} 
+	
+	// OU: @RequestMapping(value="/{id}/posts", method=RequestMethod.GET) //
+	// @PathVariable - valor recebido na URL //
+	// EndPoint //
+	@GetMapping(value = "/{id}/posts")
+	public ResponseEntity<FindPostsUserResponse> findPosts(@PathVariable String id) {
+		return ResponseEntity.ok().body(userService.findPosts(id));
+	}
 	
 }

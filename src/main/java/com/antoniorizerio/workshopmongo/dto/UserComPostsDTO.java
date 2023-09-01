@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements Serializable {
+public class UserComPostsDTO implements Serializable {
 
 	private static final long serialVersionUID = 3313438398482226589L;
 	
@@ -19,5 +19,6 @@ public class UserDTO implements Serializable {
 	private String name;
 	private String email;
 	
+	private List<PostDTO> posts = new ArrayList<>();
 
 }

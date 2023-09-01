@@ -9,14 +9,16 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.antoniorizerio.workshopmongo.dto.UserDTO;
+import com.antoniorizerio.workshopmongo.dto.UserComPostsDTO;
 import com.antoniorizerio.workshopmongo.repository.UserRepository;
 import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
 import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
 import com.antoniorizerio.workshopmongo.request.UpdateUserRequest;
 import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
-import com.antoniorizerio.workshopmongo.response.FindAllUserResponse;
+import com.antoniorizerio.workshopmongo.response.FindAllUserComPostsResponse;
+import com.antoniorizerio.workshopmongo.response.FindAllUserSemPostsResponse;
 import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
+import com.antoniorizerio.workshopmongo.response.FindPostsUserResponse;
 import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
 import com.antoniorizerio.workshopmongo.response.UpdateUserResponse;
 import com.antoniorizerio.workshopmongo.service.exceptions.ObjectNotFoundException;
@@ -30,14 +32,24 @@ public class UserService {
 	@Autowired 
 	private UserRepository userRepository;
 	
-	public FindAllUserResponse findAll() {
+	public FindAllUserComPostsResponse findAllWithPosts() {
 		List<UserEntity> listAllUsers = userRepository.findAll();
 		if(!isEmpty(listAllUsers)) {
-		    return CreateObjectsUtil.createFindAllUserResponseWithListDTO(
+		    return CreateObjectsUtil.createFindAllUserComPostsResponse(
 					listAllUsers.stream().map(userEntity -> 
-					 ConversaoUtil.getUserDTOFromEntity(userEntity)).collect(Collectors.toList()));
+					 ConversaoUtil.getUserComPostsDTOFromEntity(userEntity)).collect(Collectors.toList()));
 		}
-		return CreateObjectsUtil.createFindAllUserResponseEmpty();
+		return CreateObjectsUtil.createFindAllUserComPostsResponseEmpty();
+	}
+	
+	public FindAllUserSemPostsResponse findAllWithoutPosts() {
+		List<UserEntity> listAllUsers = userRepository.findAll();
+		if(!isEmpty(listAllUsers)) {
+		    return CreateObjectsUtil.createFindAllUserSemPostsResponse(
+					listAllUsers.stream().map(userEntity -> 
+					 ConversaoUtil.getUserSemPostsDTOFromEntity(userEntity)).collect(Collectors.toList()));
+		}
+		return CreateObjectsUtil.createFindAllUserSemPostsResponseEmpty();
 	}
 	
 	public FindByIdUserResponse findById(String id) {
@@ -45,6 +57,16 @@ public class UserService {
 		Optional<UserEntity> OptUserEntity = userRepository.findById(id);
 			OptUserEntity.ifPresentOrElse(x -> {
 				response.setUserDTO(ConversaoUtil.getUserDTOFromEntity(x));	
+		}, () -> { throw new ObjectNotFoundException("Objeto com id: "+ id +" não encontrado."); });
+		return response;
+	}
+	
+	public FindPostsUserResponse findPosts(String id) {
+		FindPostsUserResponse response = CreateObjectsUtil.createFindPostsUserResponseEmpty();
+		Optional<UserEntity> OptUserEntity = userRepository.findById(id);
+		OptUserEntity.ifPresentOrElse(userEntity -> {
+			response.setListaPosts(ConversaoUtil.
+					getListaPostDTOFromUser(userEntity.getPosts()));
 		}, () -> { throw new ObjectNotFoundException("Objeto com id: "+ id +" não encontrado."); });
 		return response;
 	}
@@ -83,7 +105,7 @@ public class UserService {
 		return response;
 	}
 	
-	private void configUpdateUserEntity(UserEntity userEntity, UserDTO userDTO) {
+	private void configUpdateUserEntity(UserEntity userEntity, UserComPostsDTO userDTO) {
 		userEntity.setEmail(userDTO.getEmail());
 		userEntity.setName(userDTO.getName());
 	}

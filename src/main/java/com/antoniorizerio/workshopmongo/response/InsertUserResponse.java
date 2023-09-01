@@ -1,6 +1,7 @@
 package com.antoniorizerio.workshopmongo.response;
 
 import java.io.Serializable;
+import com.antoniorizerio.workshopmongo.dto.UserComPostsDTO;
 import com.antoniorizerio.workshopmongo.dto.UserDTO;
 import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
 import lombok.AllArgsConstructor;
