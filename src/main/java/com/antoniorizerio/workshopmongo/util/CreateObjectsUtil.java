@@ -9,50 +9,60 @@ import com.antoniorizerio.workshopmongo.dto.UserDTO;
 import com.antoniorizerio.workshopmongo.dto.UserSemPostsDTO;
 import com.antoniorizerio.workshopmongo.repository.entity.PostEntity;
 import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
-import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
-import com.antoniorizerio.workshopmongo.response.FindAllUserComPostsResponse;
-import com.antoniorizerio.workshopmongo.response.FindAllUserSemPostsResponse;
-import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
-import com.antoniorizerio.workshopmongo.response.FindPostsUserResponse;
-import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
-import com.antoniorizerio.workshopmongo.response.UpdateUserResponse;
+import com.antoniorizerio.workshopmongo.response.ResponsePostFindById;
+import com.antoniorizerio.workshopmongo.response.ResponseUserDelete;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindAllComPosts;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindAllSemPosts;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindById;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindPosts;
+import com.antoniorizerio.workshopmongo.response.ResponseUserInsert;
+import com.antoniorizerio.workshopmongo.response.ResponseUserUpdate;
 
 public class CreateObjectsUtil {
 
-	public static FindAllUserComPostsResponse createFindAllUserComPostsResponseEmpty() {
-		return new FindAllUserComPostsResponse();
+	
+	public static ResponsePostFindById createResponsePostFindByIdEmpty() {
+		return new ResponsePostFindById();
 	}
 	
-	public static FindAllUserSemPostsResponse createFindAllUserSemPostsResponseEmpty() {
-		return new FindAllUserSemPostsResponse();
+	public static ResponsePostFindById createResponsePostFindById(PostEntity postEntity) {
+		return new ResponsePostFindById(ConversaoUtil.getPostDTOFromEntity(postEntity));
 	}
 	
-	public static FindAllUserComPostsResponse createFindAllUserComPostsResponse(List<UserComPostsDTO> listUserDTO) {
-		return new FindAllUserComPostsResponse(listUserDTO);
+	public static ResponseUserFindAllComPosts createFindAllUserComPostsResponseEmpty() {
+		return new ResponseUserFindAllComPosts();
 	}
 	
-	public static FindAllUserSemPostsResponse createFindAllUserSemPostsResponse(List<UserSemPostsDTO> listUserDTO) {
-		return new FindAllUserSemPostsResponse(listUserDTO);
+	public static ResponseUserFindAllSemPosts createFindAllUserSemPostsResponseEmpty() {
+		return new ResponseUserFindAllSemPosts();
 	}
 	
-	public static FindByIdUserResponse createFindByIdUserResponseEmpty() {
-		return new FindByIdUserResponse();
+	public static ResponseUserFindAllComPosts createFindAllUserComPostsResponse(List<UserComPostsDTO> listUserDTO) {
+		return new ResponseUserFindAllComPosts(listUserDTO);
 	}
 	
-	public static FindByIdUserResponse createFindByIdUserResponseWithDTO(UserDTO userDTO) {
-		return new FindByIdUserResponse(userDTO);
+	public static ResponseUserFindAllSemPosts createFindAllUserSemPostsResponse(List<UserSemPostsDTO> listUserDTO) {
+		return new ResponseUserFindAllSemPosts(listUserDTO);
 	}
 	
-	public static InsertUserResponse createInsertUserResponseEmpty() {
-		return new InsertUserResponse();
+	public static ResponseUserFindById createFindByIdUserResponseEmpty() {
+		return new ResponseUserFindById();
 	}
 	
-	public static DeleteUserResponse createDeleteUserResponseEmpty() {
-		return new DeleteUserResponse();
+	public static ResponseUserFindById createFindByIdUserResponseWithDTO(UserDTO userDTO) {
+		return new ResponseUserFindById(userDTO);
 	}
 	
-	public static UpdateUserResponse createUpdateUserResponseEmpty() {
-		return new UpdateUserResponse();
+	public static ResponseUserInsert createInsertUserResponseEmpty() {
+		return new ResponseUserInsert();
+	}
+	
+	public static ResponseUserDelete createDeleteUserResponseEmpty() {
+		return new ResponseUserDelete();
+	}
+	
+	public static ResponseUserUpdate createUpdateUserResponseEmpty() {
+		return new ResponseUserUpdate();
 	}
 	
 	public static AuthorDTO createAuthorDTOFromUser(UserEntity userEntity) {
@@ -63,8 +73,8 @@ public class CreateObjectsUtil {
 		return new AuthorDTO();
 	}
 	
-	public static FindPostsUserResponse createFindPostsUserResponseEmpty() {
-		return new FindPostsUserResponse();
+	public static ResponseUserFindPosts createFindPostsUserResponseEmpty() {
+		return new ResponseUserFindPosts();
 	}
 	
 	public static PostDTO createPostDTO(PostEntity postEntity) {

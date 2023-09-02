@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FindAllUserComPostsResponse implements Serializable {
+public class ResponseUserFindAllComPosts implements Serializable {
 
 	private static final long serialVersionUID = -1187168510307017L;
 	

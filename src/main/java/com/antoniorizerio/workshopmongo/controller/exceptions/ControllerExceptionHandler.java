@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.antoniorizerio.workshopmongo.service.exceptions.BadRequestException;
 import com.antoniorizerio.workshopmongo.service.exceptions.ObjectNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,18 @@ public class ControllerExceptionHandler {
 		
 		StandardError standardError = new StandardError(System.currentTimeMillis(), status.value(),
 				"Recurso não encontrado", e.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(standardError);
+	}
+	
+	@ExceptionHandler(BadRequestException.class)
+	public ResponseEntity<StandardError> BadRequest(BadRequestException e, 
+			HttpServletRequest request) {
+		
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		StandardError standardError = new StandardError(System.currentTimeMillis(), status.value(),
+				"Requisição inválida", e.getMessage(), request.getRequestURI());
 		
 		return ResponseEntity.status(status).body(standardError);
 	}

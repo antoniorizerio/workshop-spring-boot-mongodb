@@ -14,6 +14,14 @@ import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
 
 public class ConversaoUtil {
 	
+	public static PostDTO getPostDTOFromEntity(PostEntity postEntity) {
+		if(!Objects.isNull(postEntity)) {
+			return new PostDTO(postEntity.getId(), postEntity.getDate(), 
+					postEntity.getTitle(), postEntity.getBody(), postEntity.getAuthor());
+		}
+		return new PostDTO();
+	}
+	
 	public static UserComPostsDTO getUserComPostsDTOFromEntity(UserEntity userEntity) {
 		if(!Objects.isNull(userEntity)) {
 			return new UserComPostsDTO(userEntity.getId(), userEntity.getName(), userEntity.getEmail(),

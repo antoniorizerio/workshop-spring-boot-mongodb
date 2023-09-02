@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
-import com.antoniorizerio.workshopmongo.request.UpdateUserRequest;
-import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
-import com.antoniorizerio.workshopmongo.response.FindAllUserComPostsResponse;
-import com.antoniorizerio.workshopmongo.response.FindAllUserSemPostsResponse;
-import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
-import com.antoniorizerio.workshopmongo.response.FindPostsUserResponse;
-import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
-import com.antoniorizerio.workshopmongo.response.UpdateUserResponse;
+import com.antoniorizerio.workshopmongo.request.RequestUserInsert;
+import com.antoniorizerio.workshopmongo.request.RequestUserUpdate;
+import com.antoniorizerio.workshopmongo.response.ResponseUserDelete;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindAllComPosts;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindAllSemPosts;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindById;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindPosts;
+import com.antoniorizerio.workshopmongo.response.ResponseUserInsert;
+import com.antoniorizerio.workshopmongo.response.ResponseUserUpdate;
 import com.antoniorizerio.workshopmongo.service.UserService;
 
 @RestController
@@ -35,14 +35,14 @@ public class UserController {
 	// OU: @RequestMapping(method = RequestMethod.GET) //
 	// EndPoint //
 	@GetMapping(value = "/posts")
-	public ResponseEntity<FindAllUserComPostsResponse> findAllWithPosts() {
+	public ResponseEntity<ResponseUserFindAllComPosts> findAllWithPosts() {
 		return ResponseEntity.ok().body(userService.findAllWithPosts());
 	}
 	
 	// OU: @RequestMapping(method = RequestMethod.GET) //
 	// EndPoint //
 	@GetMapping
-	public ResponseEntity<FindAllUserSemPostsResponse> findAllSemPosts() {
+	public ResponseEntity<ResponseUserFindAllSemPosts> findAllSemPosts() {
 		return ResponseEntity.ok().body(userService.findAllWithoutPosts());
 	}
 	
@@ -50,7 +50,7 @@ public class UserController {
 	// @PathVariable - valor recebido na URL //
 	// EndPoint //
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<FindByIdUserResponse> findById(@PathVariable String id) {
+	public ResponseEntity<ResponseUserFindById> findById(@PathVariable String id) {
 		return ResponseEntity.ok().body(userService.findById(id));
 	}
 
@@ -58,8 +58,8 @@ public class UserController {
 	// EndPoint //
 	// Quando inserimos um recurso utilizamos o método POST //
 	@PostMapping
-	public ResponseEntity<InsertUserResponse> insert(@RequestBody InsertUserRequest request) {
-		InsertUserResponse response = userService.insert(request);
+	public ResponseEntity<ResponseUserInsert> insert(@RequestBody RequestUserInsert request) {
+		ResponseUserInsert response = userService.insert(request);
 		
 		// ServletUriComponentsBuilder: UriComponentsBuilder with additional static factory methods to create links
 		// based on the current HttpServletRequest.
@@ -76,7 +76,7 @@ public class UserController {
 	
 	// OU: @RequestMapping(method = RequestMethod.DELETE) //
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<DeleteUserResponse> delete(@PathVariable String id) {
+	public ResponseEntity<ResponseUserDelete> delete(@PathVariable String id) {
 		return ResponseEntity.ok(userService.delete(id));
 		
 		// Para não retornar nada utilizo o comando: 204 //
@@ -85,8 +85,8 @@ public class UserController {
 	
 	// OU: @RequestMapping(method = RequestMethod.PUT) //
 	@PutMapping
-	public ResponseEntity<UpdateUserResponse> update(@RequestBody UpdateUserRequest request) {
-		UpdateUserResponse response = userService.update(request);
+	public ResponseEntity<ResponseUserUpdate> update(@RequestBody RequestUserUpdate request) {
+		ResponseUserUpdate response = userService.update(request);
 		return ResponseEntity.ok(response);
 	}
 	
@@ -101,7 +101,7 @@ public class UserController {
 	// @PathVariable - valor recebido na URL //
 	// EndPoint //
 	@GetMapping(value = "/{id}/posts")
-	public ResponseEntity<FindPostsUserResponse> findPosts(@PathVariable String id) {
+	public ResponseEntity<ResponseUserFindPosts> findPosts(@PathVariable String id) {
 		return ResponseEntity.ok().body(userService.findPosts(id));
 	}
 	

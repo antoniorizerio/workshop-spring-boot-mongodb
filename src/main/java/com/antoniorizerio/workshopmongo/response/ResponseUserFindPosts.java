@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindPostsUserResponse implements Serializable {
+public class ResponseUserFindPosts implements Serializable {
 	private static final long serialVersionUID = 3273139955208555399L;
 	
 	private List<PostDTO> listaPosts = new ArrayList<>();

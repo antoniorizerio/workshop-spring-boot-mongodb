@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteUserResponse implements Serializable {
+public class ResponseUserDelete implements Serializable {
 	
 	private static final long serialVersionUID = -7453337769573822510L;
 	

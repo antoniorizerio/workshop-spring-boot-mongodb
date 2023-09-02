@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 import com.antoniorizerio.workshopmongo.dto.UserComPostsDTO;
 import com.antoniorizerio.workshopmongo.repository.UserRepository;
 import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
-import com.antoniorizerio.workshopmongo.request.InsertUserRequest;
-import com.antoniorizerio.workshopmongo.request.UpdateUserRequest;
-import com.antoniorizerio.workshopmongo.response.DeleteUserResponse;
-import com.antoniorizerio.workshopmongo.response.FindAllUserComPostsResponse;
-import com.antoniorizerio.workshopmongo.response.FindAllUserSemPostsResponse;
-import com.antoniorizerio.workshopmongo.response.FindByIdUserResponse;
-import com.antoniorizerio.workshopmongo.response.FindPostsUserResponse;
-import com.antoniorizerio.workshopmongo.response.InsertUserResponse;
-import com.antoniorizerio.workshopmongo.response.UpdateUserResponse;
+import com.antoniorizerio.workshopmongo.request.RequestUserInsert;
+import com.antoniorizerio.workshopmongo.request.RequestUserUpdate;
+import com.antoniorizerio.workshopmongo.response.ResponseUserDelete;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindAllComPosts;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindAllSemPosts;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindById;
+import com.antoniorizerio.workshopmongo.response.ResponseUserFindPosts;
+import com.antoniorizerio.workshopmongo.response.ResponseUserInsert;
+import com.antoniorizerio.workshopmongo.response.ResponseUserUpdate;
 import com.antoniorizerio.workshopmongo.service.exceptions.ObjectNotFoundException;
 import com.antoniorizerio.workshopmongo.util.ConversaoUtil;
 import com.antoniorizerio.workshopmongo.util.CreateObjectsUtil;
@@ -32,7 +32,7 @@ public class UserService {
 	@Autowired 
 	private UserRepository userRepository;
 	
-	public FindAllUserComPostsResponse findAllWithPosts() {
+	public ResponseUserFindAllComPosts findAllWithPosts() {
 		List<UserEntity> listAllUsers = userRepository.findAll();
 		if(!isEmpty(listAllUsers)) {
 		    return CreateObjectsUtil.createFindAllUserComPostsResponse(
@@ -42,7 +42,7 @@ public class UserService {
 		return CreateObjectsUtil.createFindAllUserComPostsResponseEmpty();
 	}
 	
-	public FindAllUserSemPostsResponse findAllWithoutPosts() {
+	public ResponseUserFindAllSemPosts findAllWithoutPosts() {
 		List<UserEntity> listAllUsers = userRepository.findAll();
 		if(!isEmpty(listAllUsers)) {
 		    return CreateObjectsUtil.createFindAllUserSemPostsResponse(
@@ -52,8 +52,8 @@ public class UserService {
 		return CreateObjectsUtil.createFindAllUserSemPostsResponseEmpty();
 	}
 	
-	public FindByIdUserResponse findById(String id) {
-		FindByIdUserResponse response = CreateObjectsUtil.createFindByIdUserResponseEmpty();
+	public ResponseUserFindById findById(String id) {
+		ResponseUserFindById response = CreateObjectsUtil.createFindByIdUserResponseEmpty();
 		Optional<UserEntity> OptUserEntity = userRepository.findById(id);
 			OptUserEntity.ifPresentOrElse(x -> {
 				response.setUserDTO(ConversaoUtil.getUserDTOFromEntity(x));	
@@ -61,8 +61,8 @@ public class UserService {
 		return response;
 	}
 	
-	public FindPostsUserResponse findPosts(String id) {
-		FindPostsUserResponse response = CreateObjectsUtil.createFindPostsUserResponseEmpty();
+	public ResponseUserFindPosts findPosts(String id) {
+		ResponseUserFindPosts response = CreateObjectsUtil.createFindPostsUserResponseEmpty();
 		Optional<UserEntity> OptUserEntity = userRepository.findById(id);
 		OptUserEntity.ifPresentOrElse(userEntity -> {
 			response.setListaPosts(ConversaoUtil.
@@ -71,8 +71,8 @@ public class UserService {
 		return response;
 	}
 	
-	public InsertUserResponse insert(InsertUserRequest request) {
-		InsertUserResponse response = CreateObjectsUtil.createInsertUserResponseEmpty();
+	public ResponseUserInsert insert(RequestUserInsert request) {
+		ResponseUserInsert response = CreateObjectsUtil.createInsertUserResponseEmpty();
 		if(!Objects.isNull(request)) {
 			response.setUserDTO(
 					ConversaoUtil.getUserDTOFromEntity(
@@ -82,8 +82,8 @@ public class UserService {
 		return response;
 	}
 	
-	public DeleteUserResponse delete(String id) {
-		DeleteUserResponse response = CreateObjectsUtil.createDeleteUserResponseEmpty();
+	public ResponseUserDelete delete(String id) {
+		ResponseUserDelete response = CreateObjectsUtil.createDeleteUserResponseEmpty();
 		Optional<UserEntity> optUserEntity = userRepository.findById(id);
 		optUserEntity.ifPresentOrElse(userEntity -> {
 			response.setUserDTO(ConversaoUtil.getUserDTOFromEntity(userEntity));
@@ -92,8 +92,8 @@ public class UserService {
 		return response;
 	}
 	
-	public UpdateUserResponse update(UpdateUserRequest updateUserRequest) {
-		UpdateUserResponse response = CreateObjectsUtil.createUpdateUserResponseEmpty();
+	public ResponseUserUpdate update(RequestUserUpdate updateUserRequest) {
+		ResponseUserUpdate response = CreateObjectsUtil.createUpdateUserResponseEmpty();
 		if(!isUpdateUserDTOEmpty(updateUserRequest)) {
 			Optional<UserEntity> optUserEntity = userRepository.findById(updateUserRequest.getUserDTO().getId());
 			optUserEntity.ifPresentOrElse(userEntity -> {
@@ -114,7 +114,7 @@ public class UserService {
         return collection == null || collection.isEmpty();
     }
 	
-	private boolean isUpdateUserDTOEmpty(UpdateUserRequest updateUserRequest) {
+	private boolean isUpdateUserDTOEmpty(RequestUserUpdate updateUserRequest) {
 		if(!Objects.isNull(updateUserRequest) && !Objects.isNull(updateUserRequest.getUserDTO())) {
 			return false;
 		}
