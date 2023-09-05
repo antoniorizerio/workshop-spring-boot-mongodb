@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.antoniorizerio.workshopmongo.dto.CommentDTO;
 import com.antoniorizerio.workshopmongo.repository.PostRepository;
 import com.antoniorizerio.workshopmongo.repository.UserRepository;
 import com.antoniorizerio.workshopmongo.repository.entity.PostEntity;
@@ -50,10 +51,10 @@ public class Instantiation implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		System.out.println("teste");
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 		Date data1 = sdf.parse("21/03/2018");
 		Date data2 = sdf.parse("23/03/2018");
+		Date data3 = sdf.parse("22/03/2018");
 		
 		userRepository.deleteAll();
 		postRepository.deleteAll();
@@ -64,8 +65,15 @@ public class Instantiation implements CommandLineRunner {
 		
 		userRepository.saveAll(Arrays.asList(maria, alex, bob));
 		
-		PostEntity post1 = new PostEntity(null, data1, "Partiu viagem", "Vou viajar para São Paulo. Abraços", ConversaoUtil.getAuthorDTOFromUser(maria));
-		PostEntity post2 = new PostEntity(null, data2, "Bom dia", "Acordei feliz hoje!", ConversaoUtil.getAuthorDTOFromUser(maria));
+		CommentDTO coment1 = new CommentDTO("Boa viagem mano!", data1, ConversaoUtil.getAuthorDTOFromUser(alex));
+		CommentDTO coment2 = new CommentDTO("Aproveite!", data3, ConversaoUtil.getAuthorDTOFromUser(bob));
+		CommentDTO coment3 = new CommentDTO("Tenha um ótimo dia!", data2, ConversaoUtil.getAuthorDTOFromUser(alex));
+		
+		PostEntity post1 = new PostEntity(null, data1, "Partiu viagem", "Vou viajar para São Paulo. Abraços", 
+				ConversaoUtil.getAuthorDTOFromUser(maria), Arrays.asList(coment1, coment2));
+		
+		PostEntity post2 = new PostEntity(null, data2, "Bom dia", "Acordei feliz hoje!", 
+				ConversaoUtil.getAuthorDTOFromUser(maria), Arrays.asList(coment3));
 		
 		postRepository.saveAll(Arrays.asList(post1, post2));
 		

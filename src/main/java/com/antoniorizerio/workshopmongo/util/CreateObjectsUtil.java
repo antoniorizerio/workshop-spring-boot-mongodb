@@ -80,7 +80,8 @@ public class CreateObjectsUtil {
 	public static PostDTO createPostDTO(PostEntity postEntity) {
 		if(postEntity != null) {
 			return new PostDTO(postEntity.getId(), postEntity.getDate(), 
-					postEntity.getTitle(), postEntity.getBody(), postEntity.getAuthor());
+					postEntity.getTitle(), postEntity.getBody(), postEntity.getAuthor(),
+					postEntity.getComments());
 		}
 		return new PostDTO();
 	}

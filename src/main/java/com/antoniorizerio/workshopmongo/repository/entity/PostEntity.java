@@ -1,12 +1,15 @@
 package com.antoniorizerio.workshopmongo.repository.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.antoniorizerio.workshopmongo.dto.AuthorDTO;
+import com.antoniorizerio.workshopmongo.dto.CommentDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,5 +28,7 @@ public class PostEntity implements Serializable {
 	private String title;
 	private String body;
 	private AuthorDTO author;
+	
+	private List<CommentDTO> comments = new ArrayList<>();
 	
 }

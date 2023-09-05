@@ -17,7 +17,8 @@ public class ConversaoUtil {
 	public static PostDTO getPostDTOFromEntity(PostEntity postEntity) {
 		if(!Objects.isNull(postEntity)) {
 			return new PostDTO(postEntity.getId(), postEntity.getDate(), 
-					postEntity.getTitle(), postEntity.getBody(), postEntity.getAuthor());
+					postEntity.getTitle(), postEntity.getBody(), postEntity.getAuthor(), 
+					postEntity.getComments());
 		}
 		return new PostDTO();
 	}
