@@ -1,5 +1,7 @@
 package com.antoniorizerio.workshopmongo.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,5 +69,13 @@ public class ConversaoUtil {
 			}).toList();
 		}
 		return new ArrayList<>();
+	}
+	
+	public static String decodeParam(String text) {
+		try {
+			return URLDecoder.decode(text, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return "";
+		}
 	}
 }
