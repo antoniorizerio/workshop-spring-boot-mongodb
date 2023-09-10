@@ -31,8 +31,28 @@ public class PostController {
 	// OU: @RequestMapping(value= "/titlesearch", method=RequestMethod.GET) //
 	// @PathVariable - valor recebido na URL //
 	// EndPoint //
+	/**
+	 * 
+	 * @RequestParam é utilizado para pegar uma parâmetro de query da url, por exemplo:
+	 * 		http://localhost:8080/topicos?curso=Java
+	 * 
+	 * O parâmetro curso é um parâmetro de url e para você recuperá-lo no controller, 
+	 * você deve utilizar a anotação @RequestParam.
+	 * 
+	 * Já a anotação @PathVariable serve para pegar um trecho da url que geralmente é dinâmico. Exemplo:
+	 * 		http://localhost:8080/topicos/java
+	 * 
+	 * Agora como não tem o padrão ?nomeParametro=valorParametro na url, o /java não é mais um 
+	 * parâmetro de query, mas sim parte da própria url, e para recuperá-lo devemos utilizar a 
+	 * anotação @PathVariable
+	 */
 	@GetMapping(value = "/titlesearch")
 	public ResponseEntity<ResponsePostFindByTitle> findByTitle(@RequestParam(value="text", defaultValue = "") String text) {		
 		return ResponseEntity.ok().body(postService.findByTitle(ConversaoUtil.decodeParam(text)));
+	}
+	
+	@GetMapping(value = "/titlesearchQuery")
+	public ResponseEntity<ResponsePostFindByTitle> findByTitleQuery(@RequestParam(value="text", defaultValue = "") String text) {		
+		return ResponseEntity.ok().body(postService.findByTitleQuery(ConversaoUtil.decodeParam(text)));
 	}
 }

@@ -44,6 +44,14 @@ public class PostService {
 		return response;
 	}
 
+	public ResponsePostFindByTitle findByTitleQuery(String texto) {
+		ResponsePostFindByTitle response = CreateObjectsUtil.createResponsePostFindByTitleEmpty();
+		List<PostEntity> listaPostEntity = postRepository.searchTitle(texto);
+		response.setListaPostDTO( getListaPostEntity(listaPostEntity).stream().
+			map(postEntity -> ConversaoUtil.getPostDTOFromEntity(postEntity)).toList() );
+		return response;
+	}
+	
 	private <T> List<T> getListaPostEntity(List<T> listaPostEntity) {
 		if(listaPostEntity != null) {
 			return listaPostEntity;

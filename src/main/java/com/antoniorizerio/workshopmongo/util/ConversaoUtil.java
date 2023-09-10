@@ -71,6 +71,12 @@ public class ConversaoUtil {
 		return new ArrayList<>();
 	}
 	
+	/**
+	 * Método para decodificar parâmetro da URL.
+	 * 
+	 * @param text
+	 * @return
+	 */
 	public static String decodeParam(String text) {
 		try {
 			return URLDecoder.decode(text, "UTF-8");
