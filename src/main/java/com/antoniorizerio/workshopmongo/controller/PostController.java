@@ -4,10 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.antoniorizerio.workshopmongo.request.RequestPostFindByTextAndDates;
 import com.antoniorizerio.workshopmongo.response.ResponsePostFindById;
+import com.antoniorizerio.workshopmongo.response.ResponsePostFindByTextAndDates;
 import com.antoniorizerio.workshopmongo.response.ResponsePostFindByTitle;
 import com.antoniorizerio.workshopmongo.service.PostService;
 import com.antoniorizerio.workshopmongo.util.ConversaoUtil;
@@ -54,5 +59,20 @@ public class PostController {
 	@GetMapping(value = "/titlesearchQuery")
 	public ResponseEntity<ResponsePostFindByTitle> findByTitleQuery(@RequestParam(value="text", defaultValue = "") String text) {		
 		return ResponseEntity.ok().body(postService.findByTitleQuery(ConversaoUtil.decodeParam(text)));
+	}
+	
+	@GetMapping(value = "/textdatasearch")
+	public ResponseEntity<ResponsePostFindByTextAndDates> findByTextAndDates(@RequestBody RequestPostFindByTextAndDates request) {		
+		return ResponseEntity.ok().body(postService.findByTextAndBetweenDates(request));
+	}
+	
+	/// OU
+	/// URL de teste: http://localhost:8081/posts/textdatasearch2?text=bom&minDate=2018-03-20&maxDate=2018-03-30
+	@RequestMapping(value = "/textdatasearch2", method = RequestMethod.GET)
+	public ResponseEntity<ResponsePostFindByTextAndDates> findByTextAndDates2(
+			@RequestParam(value = "text", defaultValue = "") String text,
+			@RequestParam(value = "minDate", defaultValue = "") String minDate,
+			@RequestParam(value = "maxDate", defaultValue = "") String maxDate) {		
+		return ResponseEntity.ok().body(postService.findByTextAndBetweenDates(text, minDate, maxDate));
 	}
 }

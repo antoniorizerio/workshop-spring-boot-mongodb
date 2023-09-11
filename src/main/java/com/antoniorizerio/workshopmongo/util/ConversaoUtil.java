@@ -2,9 +2,14 @@ package com.antoniorizerio.workshopmongo.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import com.antoniorizerio.workshopmongo.dto.AuthorDTO;
 import com.antoniorizerio.workshopmongo.dto.PostDTO;
@@ -83,5 +88,27 @@ public class ConversaoUtil {
 		} catch (UnsupportedEncodingException e) {
 			return "";
 		}
+	}
+	
+	public static Date getDatePlusOneDay(Date dateOriginal) {
+		if(dateOriginal == null) {
+			return null;
+		}
+		Long diaEmMilis = 24 * 60 * 60 * 1000l;
+		return new Date(dateOriginal.getTime() + diaEmMilis);
+	}
+	
+	public static Date convertDate(Date textDate, Date defaultValue) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+	
+		try {
+			return sdf.parse(textDate.toString());
+		} catch (NullPointerException | ParseException e) {
+			return defaultValue;
+		}
+		
+			//return defaultValue;
+		
 	}
 }

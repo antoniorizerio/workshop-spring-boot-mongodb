@@ -10,6 +10,7 @@ import com.antoniorizerio.workshopmongo.dto.UserSemPostsDTO;
 import com.antoniorizerio.workshopmongo.repository.entity.PostEntity;
 import com.antoniorizerio.workshopmongo.repository.entity.UserEntity;
 import com.antoniorizerio.workshopmongo.response.ResponsePostFindById;
+import com.antoniorizerio.workshopmongo.response.ResponsePostFindByTextAndDates;
 import com.antoniorizerio.workshopmongo.response.ResponsePostFindByTitle;
 import com.antoniorizerio.workshopmongo.response.ResponseUserDelete;
 import com.antoniorizerio.workshopmongo.response.ResponseUserFindAllComPosts;
@@ -21,6 +22,10 @@ import com.antoniorizerio.workshopmongo.response.ResponseUserUpdate;
 
 public class CreateObjectsUtil {
 
+	public static ResponsePostFindByTextAndDates createResponsePostFindByTextAndDatesEmpty() {
+		return new ResponsePostFindByTextAndDates();
+	}
+	
 	public static ResponsePostFindByTitle createResponsePostFindByTitleEmpty() {
 		return new ResponsePostFindByTitle();
 	}
